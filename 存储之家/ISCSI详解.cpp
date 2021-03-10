@@ -6,6 +6,16 @@ ISCSI 详解
 封装后的SCSI数据包可以在通用互联网传输,最终实现iSCSI服务端映射为一个存储空间(磁盘)提供给已连接认证后的客户端。
 	iscsi 实现网络存储，提供存储端叫target,使用存储端叫initiator。target上可以提供存储空间,initiator负责连接ISCSI设备，
 在ISCSI设备中创建文件系统,以及存取数据,在initiator上看上去是多了一块硬盘。
+	iSCSI是一种通过TCP/IP共享块设备的协议,通过该协议,一台服务器能够把本地的块设备共享给其它服务器。换句话说,这种协议实现了通过internet向设备发送SCSI指令。
+	
+1.0 iSCSI
+	iSCSI server端称为Target,client端称为Initiator,一台服务器可以同时运行多个Target,一个Target可以认为是一个物理存储池,它可以包含多个backstores,
+backstore就是实际要共享出去的设备,实际应用主要有两种类型：
+		block :即一个块设备,可以是本地的一个硬盘,如/dev/sda,也可以是一个LVM卷。
+		fileio:把本地的一个文件当作一个块设备,如一个raw格式的虚拟硬盘。
+	除了以上两类，还有pscsi、ramdisk等。
+	backstore需要添加到指定的target中,target会把这些物理设备映射成逻辑设备,并分配一个id,称为LUN(逻辑单元号)。
+	
 1.1 SCSI
 	SCSI(Small Computer System Interface)是一种I/O技术，规范了一种并行的I/O总线和相关的协议，SCSI的数据传输是以块的方式进行的。
 	SCSI总线通过SCSI控制器来和硬盘之类的设备进行通信,SCSI控制器称为Target,访问的客户端应用称为Initiator。窄SCSI总线最多允许8个、
@@ -69,8 +79,11 @@ tgtadm的配置只在内存中,下次开机重启不会生效,所以可以用过
 
         (7)、解除target [id]的访问控制列表中[address]的访问控制权限：
             --lld [driver] --op unbind --mode=target --tid=[id] --initiator-address=[address]
+			
+4、
 
 			
 // 文档链接:https://blog.csdn.net/tjiyu/article/details/52811458
 // iscsiadm用法:https://blog.csdn.net/onlyshenmin/article/details/81075209
+// OpenStack虚拟机挂载卷过程:https://zhuanlan.zhihu.com/p/29229499
 
