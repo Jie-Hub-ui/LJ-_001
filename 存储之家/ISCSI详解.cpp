@@ -80,7 +80,6 @@ tgtadm的配置只在内存中,下次开机重启不会生效,所以可以用过
         (7)、解除target [id]的访问控制列表中[address]的访问控制权限：
             --lld [driver] --op unbind --mode=target --tid=[id] --initiator-address=[address]
 			
-4、
 
 			
 // 文档链接:https://blog.csdn.net/tjiyu/article/details/52811458

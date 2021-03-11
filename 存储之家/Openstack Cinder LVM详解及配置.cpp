@@ -14,9 +14,9 @@
 cinder-volume在该卷组上创建一个逻辑卷,并且用openiscsi将这个卷当作一个iscsi tgt给输出;还可以将若干主机的本地存储用sheepdog虚拟成一个共享存储,然后使用sheepdog驱动。
 
 2、Cinder LVM配置
-	2.1 创建LVM物理卷/dev/sdb(一块物理裸磁盘)
+	2.1 创建LVM物理卷/dev/sdb(一块物理裸磁盘或磁盘分区)
 			pvcreate /dev/sdb
-		创建LVM卷组(名称:cinder-volumes)
+		创建LVM卷组(名称:cinder-volumes,可以在卷组上创建一个或多个lv逻辑卷)
 			vgcreate cinder-volumes /dev/sdb
 	2.2 修改cinder配置文件
 		[lvm]
