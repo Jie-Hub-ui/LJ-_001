@@ -229,6 +229,8 @@
 	6、例子
 		比如此时动态链接组件库已经实现,我们写一个demo,在demo里面包含这个组件实现的头文件即可创建组件对象实现。
 		自己写的demo里面需要初始化,即main第一句需要添加以下这个函数:
+		
+			#include <nsIOpenStackApi.h>   // 使用该组件只需要调用IDL生成的对应头文件即可,不必添加实现该接口类的头文件
 			static void InitDll()
 			{
 				static AppContext appCtx(AB_APPLICATION_NAME);
@@ -248,6 +250,19 @@
 				openstack->Login("hello");
 				return 0;
 			}
+			
+三、创建组件对象方法说明
+	do_CreateInstance(const nsCID &aCID, nsresult *error = 0);
+		参数说明:
+			aCID:组件CID,唯一标识一个组件,通过此ID去创建对应组件对象,可以是 NC_OPENSTACK_API_CID 或 NC_OPENSTACK_API_CONTRACTID
+			error:错误值,若创建组件对象失败返回对应错误码,成功返回0
+	例:
+		nsCOMPtr <ncIOpenStackApi> openstack = do_CreateInstance(NC_OPENSTACK_API_CONTRACTID, &result);
+		说明: ncIOpenStackApi 为组件类名(idl中声明的名称)
+		注意: 创建的组件对象只能调用组件接口里面的对应接口函数,不能调用继承子类的特有函数
+	
+	
+			
 
 		
 		
