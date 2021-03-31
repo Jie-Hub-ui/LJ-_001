@@ -260,6 +260,17 @@
 		nsCOMPtr <ncIOpenStackApi> openstack = do_CreateInstance(NC_OPENSTACK_API_CONTRACTID, &result);
 		说明: ncIOpenStackApi 为组件类名(idl中声明的名称)
 		注意: 创建的组件对象只能调用组件接口里面的对应接口函数,不能调用继承子类的特有函数
+		
+	do_QueryInterFace(nsISupports *aRawPtr);
+		参数说明:
+			aRawPtr:nsISupports基接口组件对象
+		说明:当一个XPCOM组件被继承多次,继承方式有单继承、多继承、菱形继承等情况,我们需要通过该方法找到对应子类在继承体系中的偏移位置,
+	然后返回对应子类对象,调用子类的实现,这时候的子类包含所有基类方法和成员(同c++继承体系)
+	例：
+		nsCOMPtr <ncOpenStackApi> openstack_1 = do_QueryInterFace(openstack);
+		说明:
+			ncOpenStackApi继承ncIOpenStackApi类,所以通过do_QueryInterFace方法偏移到继承体系中ncOpenStackApi位置;还可以继续继承ncIOpenStackApi
+		或继承ncOpenStackApi类,同样可以通过此方法实现。
 	
 	
 			
